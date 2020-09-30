@@ -6,6 +6,6 @@ setup(name='assignClades',
       author='Ammar Aziz',
       author_email='ammar.aziz@mh.org.au',
       license='MIT',
-      packages=['assignClades.py'],
+      packages=['assignClades'],
       install_requires=['biopython', 'pandas'],
       zip_safe=False)
