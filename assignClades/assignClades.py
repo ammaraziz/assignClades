@@ -6,12 +6,8 @@
 
 import argparse, sys, os
 from Bio import SeqIO, Seq, SeqRecord
-from scripts.codon_align import align_pairwise, get_cds, codon_align
-from scripts.utils import  load_features, read_in_clade_definitions, is_node_in_clade, safe_translate
-
-# for .tsv file containing definitions of clades
-#scriptpath = "config/"
-#sys.path.append(os.path.abspath(scriptpath))
+from codon_align import align_pairwise, get_cds, codon_align
+from utils import  load_features, read_in_clade_definitions, is_node_in_clade, safe_translate
 
 def msg(name = None):
     return ''' Assign clades to HA influenza sequences. 
@@ -32,7 +28,7 @@ def msg(name = None):
     '''
 # get clade internal clade and likeness
 clades_relatives = {}
-with open(f"/Users/amar/cloudstor/vidrl/projects/clade_assigner/config/clades_relative.tsv") as f:
+with open(f"config/clades_relative.tsv") as f:
     from csv import DictReader
     data = DictReader(f, delimiter = "\t", )
     for entry in data:
@@ -93,7 +89,6 @@ if __name__ == '__main__':
         #write out results
         with open(clades_out, 'a') as f:
             print(f"{seq.description}\t{', '.join(matches)}", file = f)
-        #print(f"{seq.description}\t{', '.join(matches)}", file=sys.stdout)
 
         # compress clade and find likeness
         if matches:
