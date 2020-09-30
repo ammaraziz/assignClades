@@ -1,6 +1,5 @@
 import os
 from Bio import SeqIO, SeqFeature, Seq
-#phylo, SeqRecord
 from collections import defaultdict
 from pandas import read_csv
 

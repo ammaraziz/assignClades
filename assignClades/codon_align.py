@@ -3,7 +3,7 @@
 from numpy import array, inf
 import sys
 from Bio import Seq
-from scripts.utils import safe_translate
+from utils import safe_translate
 
 scoring_params = {"score_match":3, "score_mismatch":-1, "score_gapext":-1, "score_gapopen":-10}
 
