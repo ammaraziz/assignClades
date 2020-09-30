@@ -5,8 +5,11 @@ Assign clades to HA influenza sequences. Heavily reliant on nextstrain seasonal 
 ### Usage 
 
 assignClades.py -s seq.fasta -l h3n2 -b outputName
+
 	-s, --sequence          Path to input sequence [YourSequences.fasta]
+	
 	-l, --lineage           Lineage of input strains [h1n1, h3n2, vic, yam]
+	
 	-b, --batchName         The batch name
 
 ### Example usage
