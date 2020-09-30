@@ -1,6 +1,6 @@
 from setuptools import setup
 
-setup(name='cladeAssigner',
+setup(name='assignClades',
       version='0.1',
       description='Return HA clades for given input sequences',
       author='Ammar Aziz',
