@@ -1,7 +1,13 @@
 ## assignClades.py
 
 Assign clades to HA influenza sequences. Heavily reliant on nextstrain seasonal influenza tools and scripts. 
-    
+
+### Install
+
+  pip install git+https://github.com/ammaraziz/assignClades.git
+  
+Dependancies are `Biopython` and `pandas`.
+
 ### Usage 
 
 	assignClades.py -s seq.fasta -l h3n2 -b outputName
@@ -22,6 +28,6 @@ Options:
 	batchName_clades.txt        complete clade provenance
 	batchName_results.txt       current clade and vaccine result 
 
-Clade defintions are stored in /config/{lineage}.tsv.
+Clade defintions are stored in `config/{lineage}.tsv`.
 
-Special thanks to the nextstrain crew for their amazing work on influenza.
+Special thanks to the `nextstrain` crew for their amazing work on influenza, and making everything open source and freely available. 
