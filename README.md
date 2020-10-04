@@ -4,7 +4,7 @@ Assign clades to HA influenza sequences. Heavily reliant on nextstrain seasonal 
 
 ### Install
 
-  pip install git+https://github.com/ammaraziz/assignClades.git
+  `pip install git+https://github.com/ammaraziz/assignClades.git`
   
 Dependancies are `Biopython` and `pandas`.
 
