@@ -1,0 +1,16 @@
+Improvements:
+
+1. add checks to account for human error:
+	~ Wrong strain/gene in fasta file
+	~ Wrong reference (similar to above)
+	~ 
+	
+2. Split operations into 3 chunks:
+	~ parse args function (see nextstrain as a good example)
+	~ run args function
+	~ provanence function
+	~ provanence to homologous function
+	~
+3. Auto detect reference/gene
+	~ most likely candidate is sourmash tool for this
+	~ blast is also an option but more.... bulky

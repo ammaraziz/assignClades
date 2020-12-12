@@ -8,10 +8,10 @@ V1B	B/Sydney/508/2010 like
 V1A.1	B/Colorado/07/2017 like
 V1A.2	B/Hong Hong/269/2017 like
 V1A.3	B/Washington/02/2019 like
-V1A.3/126K	B/Victoria/15/2020 like
-V1A.3/128K	B/Canberra/3/2020 like
-V1A.3/129N	B/South Africa/3623/2020 like
-V1A.3/150K	B/Victoria/2110/2019 like
+V1A.3+126K	B/Victoria/15/2020 like
+V1A.3+128K	B/Canberra/3/2020 like
+V1A.3+129N	B/South Africa/3623/2020 like
+V1A.3+150K	B/Victoria/2110/2019 like
 
 6b	A/New Caledonia/58/2014 like
 6b1	A/Michigan/45/2015 like
@@ -27,6 +27,7 @@ V1A.3/150K	B/Victoria/2110/2019 like
 6b1.A/183P-5b	A/Canberra/337/2019 like
 6b1.A/156K	A/Victoria/2570/2019 like
 6b1.A/187A	A/Guangdong-Maonan/SWL1536/2019 like
+6b1.A/156K+195E	A/QATAR/16-VI-19-0049409/2019
 
 3C	A/South Australia/34/2019 like
 3C.3	A/Kansas/14/2017 like
@@ -40,7 +41,7 @@ V1A.3/150K	B/Victoria/2110/2019 like
 3C.2a3	A/Singapore/TT1374/2016 like
 3C.2a4	A/Auckland/500/2017 like
 A1b/197R	A/Victoria/223/2019 like
-A1b/137F	A/Darwin/726/2019 like
+A1b/137F	A/Hong Kong/2671/2019 like
 A1b/186D	A/Perth/20/2020 like
 A1b/94N	A/Qatar/16-VI-19-0049409/2019 like
 A1b/94N+186S	A/Tasmania/503/2020 like
