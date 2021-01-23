@@ -14,3 +14,17 @@ Improvements:
 3. Auto detect reference/gene
 	~ most likely candidate is sourmash tool for this
 	~ blast is also an option but more.... bulky
+
+4. replace biopython aligner with ssw:
+	
+	import ssw
+	aligner = ssw.Aligner()
+
+	# set alignment options
+	aligner.matrix.match = 3
+	aligner.matrix.mismatch = -1
+	aligner.gap_extend = -1
+	aligner.gap_open = -10 
+
+	alignment = aligner.align(reference="ACGTGAGAATTATGGCGCTGTGATT", query="ACGTGAGAATTATGCGCTGTGATT")
+	print(alignment.alignment_report())
