@@ -2,6 +2,7 @@
 
 # TO DO:
 #   1. add checks to input options to help user
+#   2. remove hard coded internal dict - read from file similar to other files
 
 import argparse
 import sys
@@ -12,6 +13,7 @@ from utils import load_features, load_relatives, read_in_clade_definitions, is_n
 
 cwd = os.path.dirname(os.path.realpath(__file__))
 print(cwd)
+
 
 def msg(name=None):
     return ''' Assign clades to HA influenza sequences.
@@ -40,10 +42,12 @@ def register_arguments():
         usage=msg()
     )
 
-    parser.add_argument("-s", "--sequences", required=True, help="FASTA file of HA sequences")
+    parser.add_argument("-s", "--sequences", required=True,
+                        help="FASTA file of HA sequences")
     parser.add_argument("-l", "--lineage", required=True,
                         help="Lineage of the sequences supplied - h1n1, h3n2, vic, yam")
-    parser.add_argument("-b", "--batchName", required=True, help="The name/path to write results")
+    parser.add_argument("-b", "--batchName", required=True,
+                        help="The name/path to write results")
     args = parser.parse_args()
 
     # lineage
@@ -117,21 +121,25 @@ def get_likeness(seq, provanence, clades_relatives, internal_clades):
         string formatted for output
     '''
     clade_final = provanence.pop(-1)  # get the last clade
-
+    print(clade_final)
+    # match nextstrain clades
     if clade_final in clades_relatives.keys():
-        like = clades_relatives[clade_final]
-        out = f"{seq.description}\t{clade_final}\t{like}"
+        virus_like = clades_relatives[clade_final]
+        clade_desig = f"{seq.description}\t{clade_final}\t{virus_like}"
+        desig = clade_final
 
+    # match whocc internal clades
     elif clade_final in internal_clades:
         tmp_like = internal_clades[clade_final]
-        like = clades_relatives[tmp_like]
-        out = f"{seq.description}\t{clade_final}\t{like}"
+        virus_like = clades_relatives[tmp_like]
+        clade_desig = f"{seq.description}\t{clade_final}\t{virus_like}"
+        desig = clade_final
 
     else:
-        out = f"{seq.description}\tUnknown clade found. Check clade defintions in config/clade_relatives.tsv"
+        clade_desig = f"{seq.description}\tError:No clade found."
+        virus_like = clade_desig
 
-    print(out, file=sys.stdout)
-    return(clade_final, like)
+    return(clade_desig, virus_like, desig)
 
 
 class ResultsBucket:
@@ -162,7 +170,8 @@ class ResultsBucket:
         '''
         if self.seq_in_data(seqno) is True:
             raise ValueError("Entry exists. Check code")
-        self.df.loc[seqno] = [ha_clade, result, prov, aa_mut, h275y, s31n, i38x]
+        self.df.loc[seqno] = [ha_clade, result,
+                              prov, aa_mut, h275y, s31n, i38x]
 
     def mod_result(self, seqno, **values):
         '''
@@ -178,10 +187,11 @@ class ResultsBucket:
     def seq_in_data(self, item):
         return(item in self.df.index)
 
-    def write_results(provancence, results_relative, output_file):
-        with open(output_file, 'a') as f:
-            print(provancence, file=f)
-            print(f"{', '.join(provancence)}\t{results_relative}", file=f)
+    def write_results(self, output):
+        # with open(output_file, 'a') as f:
+        #print(provancence, file=f)
+        #print(f"{', '.join(provancence)}\t{results_relative}", file=f)
+        self.df.to_csv(output)
 
 
 def main():
@@ -189,7 +199,8 @@ def main():
     args = register_arguments()
 
     input_sequences = SeqIO.parse(args.sequences, 'fasta')
-    clade_designations = read_in_clade_definitions(f"config/clades_{args.lineage}_ha.tsv")
+    clade_designations = read_in_clade_definitions(
+        f"config/clades_{args.lineage}_ha.tsv")
 
     refname = (f"config/reference_{args.lineage}_ha.gb")
     ref = SeqIO.read(refname, 'genbank')
@@ -203,6 +214,7 @@ def main():
     prov_out = args.batchName + "_provanence.txt"
     results_out = args.batchName + "_cladeResults.txt"
     errors_out = args.batchName + "_error.txt"
+    bucket_out = args.batchName + "_bucket.txt"
 
     # results
     results_bucket = ResultsBucket()
@@ -211,27 +223,33 @@ def main():
 
         seq_container = tmpNode()
         seq_aln = codon_align(seq, refstr, refAA, cds_start, cds_end)
+
         # error checking
         if seq_aln is None:
-            print(f"{seq.id}\tError translating, check lineage and correct", file=sys.stdout)
+            print(
+                f"{seq.id}\tError translating, check lineage and correct", file=sys.stdout)
             with open(errors_out, 'a') as ef:
-                print(f"{seq.id}\tError translating, check lineage and correct", file=ef)
+                print(
+                    f"{seq.id}\tError translating, check lineage and correct", file=ef)
             continue
 
-        clade_provanence = get_provanence(seq_aln, features, clade_designations, ref)
+        clade_provanence = get_provanence(
+            seq_aln, features, clade_designations, ref)
         # write out results
         with open(prov_out, 'a') as cf:
             print(f"{seq.description}\t{', '.join(clade_provanence)}", file=cf)
 
-        clade_final = get_likeness(seq, clade_provanence, clades_relatives, internal_clades)
-        ha_clade, fuz_result = get_likeness(seq, clade_provanence, clades_relatives, internal_clades)
+        #clade_final = get_likeness(seq, clade_provanence, clades_relatives, internal_clades)
+        clade_desig, virus_like, desig = get_likeness(
+            seq, clade_provanence, clades_relatives, internal_clades)
         with open(results_out, 'a') as rf:
-            print(clade_final, file=rf)
-        print(clade_final, file=sys.stdout)
+            print(clade_desig, file=rf)
+        print(clade_desig, file=sys.stdout)
 
-        results_bucket.add_result(seqno=seq.description, ha_clade=ha_clade, result=fuz_result,
+        results_bucket.add_result(seqno=seq.description, ha_clade=desig, result=virus_like,
                                   prov=', '.join(clade_provanence))
-        print(results_bucket)
+    print(results_bucket)
+    results_bucket.write_results(bucket_out)
 
 
 if __name__ == '__main__':
