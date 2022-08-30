@@ -1,3 +1,7 @@
+# This tool has been superseeded by the amazing NextClade: https://clades.nextstrain.org/
+
+___
+
 ## assignClades.py
 
 Assign clades to HA influenza sequences. Heavily reliant on nextstrain seasonal influenza tools and scripts. 
